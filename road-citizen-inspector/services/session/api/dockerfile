@@ -1,7 +1,7 @@
 # --- build stage ---
 FROM public.ecr.aws/docker/library/node:lts-alpine3.22 AS build
 WORKDIR /repo
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.33.1
 
 # copy minimal manifests for better cache
 COPY pnpm-lock.yaml .

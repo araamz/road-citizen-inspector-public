@@ -1,7 +1,7 @@
 # --- build stage ---
 FROM public.ecr.aws/docker/library/node:lts-alpine3.22 AS build
 WORKDIR /repo
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.33.1
 
 # copy minimal manifests for better cache
 COPY pnpm-lock.yaml .
@@ -23,10 +23,10 @@ FROM public.ecr.aws/docker/library/node:lts-alpine3.22
 WORKDIR /app
 ENV NODE_ENV=production
 
-# copy built app 
+# copy built app
 COPY --from=build /repo/apps/rci_frontend/dist /app/dist
 
-ENV VITE_SERVER_URL=http://rci.azaremehrjardi.dev:4000/api
+ENV VITE_SERVER_URL=http://rci.sample.com:4000/api
 RUN npm install -g serve
 WORKDIR /app
 EXPOSE 3000

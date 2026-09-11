@@ -10,11 +10,14 @@
     "typecheck": "pnpm -r run typecheck"
   },
   "devDependencies": {
-    "typescript": "^5.9.0",
     "eslint": "^9.36.0",
-    "tsup": "^8.5.0"
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0"
   },
   "exports": {
     "./session": "./session/new_session.schema.ts"
+  },
+  "dependencies": {
+    "pnpm": "^12.4.1"
   }
 }

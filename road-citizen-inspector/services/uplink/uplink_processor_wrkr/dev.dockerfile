@@ -1,6 +1,6 @@
 FROM public.ecr.aws/docker/library/node:lts-alpine3.22
 WORKDIR /app
-RUN npm install -g pnpm
+RUN npm install -g pnpm@10.33.1
 
 # copy minimal manifests for better cache
 COPY pnpm-lock.yaml .

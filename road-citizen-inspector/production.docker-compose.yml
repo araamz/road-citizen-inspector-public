@@ -298,6 +298,6 @@ services:
         restart: true
 secrets:
   tls_bundle:
-    file: ${CERTS_FOLDER}/_.azaremehrjardi.dev/_.azaremehrjardi.dev.bundle.pem
+    file: ${CERTS_FOLDER}/_.sample.com/_.sample.com.bundle.pem
   tls_key:
-    file: ${CERTS_FOLDER}/_.azaremehrjardi.dev/_.azaremehrjardi.dev.key.pem
+    file: ${CERTS_FOLDER}/_.sample.com/_.sample.com.key.pem
