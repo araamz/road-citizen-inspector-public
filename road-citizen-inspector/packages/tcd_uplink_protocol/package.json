@@ -1,0 +1,39 @@
+{
+  "name": "@road-citizen-inspector/tcd-uplink-protocol",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": true,
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "lib"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./payload_parser": {
+      "types": "./dist/payload_parser/index.d.ts",
+      "import": "./dist/payload_parser/index.js",
+      "require": "./dist/payload_parser/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/payload_parser/index.ts --dts --platform=node --format esm,cjs --clean",
+    "clean": "rimraf dist && rimraf node_modules",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@types/node": "^24.5.2",
+    "tsup": "^8.5.0",
+    "typescript": "^5.9.0",
+    "rimraf": "^6.0.1"
+  }
+}

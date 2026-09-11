@@ -1,0 +1,20 @@
+{
+  "name": "road-citizen-inspector",
+  "private": true,
+  "packageManager": "pnpm@10.17.1",
+  "scripts": {
+    "build": "pnpm -r run build",
+    "build:lib": "pnpm -r --filter '[keywords.lib]' run build",
+    "dev": "pnpm -r --parallel run dev",
+    "lint": "pnpm -r run lint",
+    "typecheck": "pnpm -r run typecheck"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.0",
+    "eslint": "^9.36.0",
+    "tsup": "^8.5.0"
+  },
+  "exports": {
+    "./session": "./session/new_session.schema.ts"
+  }
+}

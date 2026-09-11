@@ -1,0 +1,49 @@
+{
+  "name": "@road-citizen-inspector/models",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "keywords": [
+    "lib"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./session": {
+      "types": "./dist/session/index.d.ts",
+      "import": "./dist/session/index.js",
+      "require": "./dist/session/index.cjs"
+    },
+    "./uplink": {
+      "types": "./dist/uplink/index.d.ts",
+      "import": "./dist/uplink/index.js",
+      "require": "./dist/uplink/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts src/session/index.ts src/uplink/index.ts --dts --format esm,cjs --clean",
+    "clean": "rimraf dist && rimraf node_modules",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@types/pg": "^8.15.5",
+    "kysely": "^0.28.7",
+    "kysely-postgres-js": "^3.0.0",
+    "pg": "^8.16.3",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.0"
+  }
+}

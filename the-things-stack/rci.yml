@@ -1,0 +1,21 @@
+template-id: rci
+name: Road Citizen Inspector
+description: Integration with Road Citizen Inspector platform
+logo-url: https://static.azaremehrjardi.dev/rci.logo.png
+info-url: https://rci.azaremehrjardi.dev
+documentation-url: https://rci.azaremehrjardi.dev
+tts-documentation-url: https://rci.azaremehrjardi.dev
+
+fields:
+  - id: webhook_key
+    name: Webhook Key
+    description: The webhook key provided by Road Citizen Inspector session.
+    secret: true
+format: json
+headers:
+  Content-Type: application/json
+  x-webhook-key: "{webhook_key}"
+create-downlink-api-key: false
+base-url: https://rci.azaremehrjardi.dev
+paths:
+  uplink-message: "/uplink"

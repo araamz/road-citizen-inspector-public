@@ -1,0 +1,34 @@
+{
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "dotenv -e .env.local -- tsx watch src/index.ts",
+    "build": "tsup src/index.ts --dts --format esm --sourcemap --clean --no-external --external=@road-citizen-inspector/schemas --external=@road-citizen-inspector/contracts --external=@road-citizen-inspector/models --external=@road-citizen-inspector/uplink-processing-jobs --external=@road-citizen-inspector/server-map",
+    "start": "NODE_ENV=production node dist/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "clean": "rimraf dist && rimraf node_modules"
+  },
+  "dependencies": {
+    "@road-citizen-inspector/contracts": "workspace:*",
+    "@road-citizen-inspector/models": "workspace:*",
+    "@road-citizen-inspector/schemas": "workspace:*",
+    "@road-citizen-inspector/uplink-processing-jobs": "workspace:*",
+    "@road-citizen-inspector/tcd-uplink-protocol": "workspace:*",
+    "@road-citizen-inspector/server-map": "workspace:*",
+    "@types/pg": "^8.15.5",
+    "amqplib": "^0.10.9",
+    "kysely": "^0.28.7",
+    "kysely-postgres-js": "^3.0.0",
+    "pg": "^8.16.3",
+    "postgres": "^3.4.7"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.7",
+    "dotenv-cli": "^7.4.4",
+    "rimraf": "^6.0.1",
+    "tsup": "^8.5.0",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.2"
+  }
+}

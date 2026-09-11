@@ -1,0 +1,129 @@
+
+services:
+  session_api:
+    container_name: dev_rci_session_api
+    build:
+      context: .
+      dockerfile: ./services/session/api/dev.dockerfile
+    volumes:
+      - ./services/session/api/src:/app/services/session/api/src
+    ports:
+      - 4001:4001
+    depends_on:
+      session_db:
+        condition: service_started
+      app_rabbitmq:
+        condition: service_healthy
+        restart: true
+  session_db:
+    image: public.ecr.aws/docker/library/postgres:17.6
+    container_name: dev_rci_session_db
+    volumes:
+      - ./services/session/db/data:/var/lib/postgresql/data
+      - ./services/session/db/scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rci_session_database
+    ports:
+      - "5432:5432"
+  session_expiry_wrkr:
+    container_name: dev_rci_session_expiry_wrkr
+    build:
+      context: .
+      dockerfile: ./services/session/session_expiry_wrkr/dev.dockerfile
+    volumes:
+      - ./services/session/session_expiry_wrkr/src:/app/services/session/session_expiry_wrkr/src
+    depends_on:
+      session_db:
+        condition: service_started
+      app_rabbitmq:
+        condition: service_healthy
+        restart: true
+  uplink_api:
+    container_name: dev_rci_uplink_api
+    build:
+      context: .
+      dockerfile: ./services/uplink/api/dev.dockerfile
+    volumes:
+      - ./services/uplink/api/src:/app/services/uplink/api/src
+    ports:
+      - 4002:4002
+    depends_on:
+      uplink_db:
+        condition: service_started
+      app_rabbitmq:
+        condition: service_healthy
+        restart: true
+  uplink_db:
+    image: public.ecr.aws/docker/library/postgres:17.6
+    container_name: dev_rci_uplink_db
+    volumes:
+      - ./services/uplink/db/data:/var/lib/postgresql/data
+      - ./services/uplink/db/scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=rci_uplink_database
+    ports:
+      - "5433:5432"
+  uplink_processor_wrkr:
+    container_name: dev_rci_uplink_processor_wrkr
+    build:
+      context: .
+      dockerfile: ./services/uplink/uplink_processor_wrkr/dev.dockerfile
+    volumes:
+      - ./services/uplink/uplink_processor_wrkr/src:/app/services/uplink/uplink_processor_wrkr/src
+    depends_on:
+      uplink_api:
+        condition: service_started
+      uplink_db:
+        condition: service_started
+      app_rabbitmq:
+        condition: service_healthy
+        restart: true
+  app_rabbitmq:
+    container_name: dev_rci_app_queue
+    build:
+      context: .
+      dockerfile: rabbitmq.dockerfile
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "check_port_connectivity"]
+      interval: 10s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+  app_redis:
+    container_name: dev_rci_app_redis
+    image: redis:8.0.4-alpine3.21
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+  gateway_api:
+    container_name: dev_rci_gateway_api
+    build:
+      context: .
+      dockerfile: ./services/gateway/dev.dockerfile
+    volumes:
+      - ./services/gateway/src:/app/services/gateway/src
+    ports:
+      - 4000:4000
+    depends_on:
+      app_redis:
+        condition: service_healthy
+      session_db:
+        condition: service_started
+      uplink_db:
+        condition: service_started
+      app_rabbitmq:
+        condition: service_healthy
+      uplink_api:
+        condition: service_started
+      session_api:
+        condition: service_started

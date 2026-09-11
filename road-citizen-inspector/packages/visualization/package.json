@@ -1,0 +1,38 @@
+{
+  "name": "@road-citizen-inspector/visualization",
+  "version": "1.0.0",
+  "type": "module",
+  "sideEffects": true,
+  "files": [
+    "dist"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "keywords": [
+    "lib"
+  ],
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --dts --no-external  --external=@road-citizen-inspector/tcd-uplink-protocol --external=@road-citizen-inspector/models --format esm,cjs --clean",
+    "clean": "rimraf dist && rimraf node_modules",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@road-citizen-inspector/tcd-uplink-protocol": "workspace:*",
+    "@road-citizen-inspector/models": "workspace:*",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "tsup": "^8.5.0",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.9.0"
+    
+  }
+}

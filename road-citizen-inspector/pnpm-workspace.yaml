@@ -1,0 +1,12 @@
+packages:
+  - packages/*
+  - apps/*
+  - services/*/*
+  - services/*
+
+ignoredBuiltDependencies:
+  - esbuild
+
+onlyBuiltDependencies:
+  - '@tailwindcss/oxide'
+  - unrs-resolver

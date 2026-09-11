@@ -1,0 +1,33 @@
+# --- build stage ---
+FROM public.ecr.aws/docker/library/node:lts-alpine3.22 AS build
+WORKDIR /repo
+RUN npm install -g pnpm
+
+# copy minimal manifests for better cache
+COPY pnpm-lock.yaml .
+COPY package.json .
+COPY pnpm-workspace.yaml .
+COPY ./packages/ ./packages/
+RUN pnpm install
+RUN pnpm -r run build
+
+# install only the app and its local workspace deps
+RUN mkdir -p ./apps/rci_frontend
+WORKDIR /repo/apps/rci_frontend
+COPY ./apps/rci_frontend/ ./
+RUN pnpm install
+RUN pnpm run build
+
+# --- runtime stage ---
+FROM public.ecr.aws/docker/library/node:lts-alpine3.22
+WORKDIR /app
+ENV NODE_ENV=production
+
+# copy built app 
+COPY --from=build /repo/apps/rci_frontend/dist /app/dist
+
+ENV VITE_SERVER_URL=http://rci.azaremehrjardi.dev:4000/api
+RUN npm install -g serve
+WORKDIR /app
+EXPOSE 3000
+CMD ["serve", "-s","-l", "3000", "dist"]
