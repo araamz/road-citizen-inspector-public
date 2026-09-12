@@ -26,8 +26,12 @@ pnpm run dev
 ```
 
 ## Deploying Locally
-If you like to deploy for usage with the ThingsStack, you may use the following steps below to use the application. There are some pre-requisites for the deployment of the software platform.
+If you like to deploy for usage with the Things Stack, you may use the following steps below to use the application. There are some pre-requisites for the deployment of the software platform. 
+
+- **Pre-requisite #1:** HTTPS certificates are needed to be used with NGINX. Additionally, these certs must be provided to the `production.docker-compose.yml` file by using environmental variables. You may use the blank `.env.blk` to create a new environmental variable file with the directory.
+- **Pre-requisite #2:** The NGINX configuration file must be updated with the correct domains for the local deployment. The NGINX file located in `./nginx/production.nginx.conf` must have Line 29 and Line 41 updated with a corresponding domain from **Pre-requisite #1**.
 ```
+
 
 ```
 
