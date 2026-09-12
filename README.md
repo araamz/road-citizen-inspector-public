@@ -11,9 +11,25 @@ The Road Citizen Inspector is software platform built as part of the Master's th
 
 ## Deploying for Evaluation
 If you like to deploy for quick evaluation you may use the following steps below to use the application.
+```
+// Beginning from repository directory.
+
+// Build the backend services using Docker Compose.
+cd ./road-citizen-inspector
+docker compose up --build
+
+// Startup the frontend to use with the backend services.
+cd ./apps/rci_frontend
+pnpm run -r build
+pnpm install
+pnpm run dev
+```
 
 ## Deploying Locally
-If you like to deploy for usage with the ThingsStack, you may use the following steps below to use the application.
+If you like to deploy for usage with the ThingsStack, you may use the following steps below to use the application. There are some pre-requisites for the deployment of the software platform.
+```
+
+```
 
 ## Generating Mock Data
 If you like to generate mock data and seed the application's databases you may use the following steps below to use a seeding script.
