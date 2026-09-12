@@ -3,7 +3,7 @@
     <img src="media/logo.png" style="width: 200px;">
 </p>
 
-The Road Citizen Inspector is software platform built as part of the Master's thesis titled **"Citizen Infrastructure for Traffic Monitoring Using LoRaWAN Technology"** at the University of Nevada, Reno in May 2026. It is available on ProQuest and is accessible [here]([here](https://guides.library.unr.edu/pqdt-unr)). The system architecture and design of the microservices are better described within the thesis. For quick reference, an overview of the software architecture is shown below.
+The Road Citizen Inspector is software platform built as part of the Master's thesis titled **"Citizen Infrastructure for Traffic Monitoring Using LoRaWAN Technology"** at the University of Nevada, Reno in May 2026. It is available on ProQuest and is accessible [here](https://guides.library.unr.edu/pqdt-unr). The system architecture and design of the microservices are better described within the thesis. For quick reference, an overview of the software architecture is shown below.
 
 <p align="center">
     <img src="media/overview.png" style="width: 500px;">
