@@ -4,9 +4,9 @@
   <img src="media/logo.png" alt="Road Citizen Inspector logo" width="200">
 </p>
 
-Road Citizen Inspector (RCI) is a software platform developed as part of the master's thesis **â€œCitizen Infrastructure for Traffic Monitoring Using LoRaWAN Technologyâ€** at the University of Nevada, Reno in May 2026.
+Road Citizen Inspector (RCI) is a software platform developed as part of the master's thesis **"Citizen Infrastructure for Traffic Monitoring Using LoRaWAN Technology"** at the University of Nevada, Reno in May 2026.
 
-The thesis is available through ProQuest and can be accessed using the [University of Nevada, Reno ProQuest Dissertations and Theses guide](https://guides.library.unr.edu/pqdt-unr). It provides a detailed description of the system architecture and microservice design. A high-level overview of the software architecture is shown below.
+The thesis is available through ProQuest and can be accessed using the [University of Nevada, Reno ProQuest Dissertations and Theses](https://guides.library.unr.edu/pqdt-unr) library. It provides a detailed description of the system architecture and microservice design. A high-level overview of the software architecture is shown below.
 
 <p align="center">
   <img src="media/overview.png" alt="Road Citizen Inspector software architecture" width="500">
@@ -78,7 +78,7 @@ Open `.env` and provide the required certificate directory and other deployment-
 
 ### Configure NGINX
 
-Open `nginx/production.nginx.conf` and replace the placeholder domains with the domains configured for the deployment.
+Open `nginx/production.nginx.conf` and replace the placeholder domains with the domains configured for the deployment (Line 29 and Line 41).
 
 ### Start the Application
 
@@ -104,8 +104,21 @@ docker compose -f production.docker-compose.yml down
 
 ## Generating Mock Data
 
-The repository includes a seeding script that can populate the application databases with mock traffic readings and device-status data for evaluation.
+The repository includes a seeding script that can populate the application databases with mock traffic readings and device-status data for evaluation. The script provides several CLI options for targeting a deployment, configuring simulated traffic data, and controlling seed values. Device templates used to generate sensor data can be configured within `seed.ts`.
 
 Run the seeding script only after the backend services and their databases are running.
 
-<!-- Add the exact seeding command and any required arguments or environment variables here. -->
+> [!WARNING]
+> When deploying with The Things Stack, the following services must be uncommented in `production.docker-compose.yml` for the seeding script to operate: `us_uplink_api` and `us_session_api`.
+
+### Seeding Options
+
+- `session (-s)`: The ID of the Traffic Monitoring session to target.
+- `key (-k)`: The generated webhook key that allows The Things Stack to publish uplinks to a Traffic Monitoring session.
+- `tts_app_id (-a)`: The Things Stack application ID assigned to a session upon receipt of its first uplink. This value may be any application ID selected by the user when initially seeding the session.
+- `connect_string (-cs)`: The connection string for the Uplink microservice database.
+- `mean_vpm (-vpm)`: The average number of vehicles detected per minute along a corridor within a transportation network.
+- `uplink_server_address (-u_addr)`: The address of the Uplink API server.
+- `session_server_address (-s_addr)`: The address of the Session API server.
+- `provision (-p)`: Provisions devices using the device templates defined in `seed.ts`. **Devices must be provisioned before traffic or status data can be seeded.**
+- `timezone (-tz)`: The timezone of the simulated vehicle-detection timestamps. These timestamps are converted from the specified timezone to UTC before being stored in the database.
