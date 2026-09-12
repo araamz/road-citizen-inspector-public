@@ -16,6 +16,13 @@
 # (DYNAMIC - 3 servers) uplink_api = 4200 -- /uplink/:appId/up/:devId
 # (DYNAMIC - 3 servers) ext_proxy_api = 4000 -- /api/*
 
+# NOTE: Server ports require exposure to the host machine if the seeder
+#       script is to be used. For now, they are commented out.
+# NOTE:  us_uplink_api is required to be uncommented out to be used with
+#        the seeder script.
+# NOTE:  us_session_apit is required to be uncommented out to be used with
+#        the seeder script.
+
 services:
   frontend_app:
     restart: unless-stopped
@@ -31,8 +38,8 @@ services:
     build:
       context: .
       dockerfile: ./services/session/api/dockerfile
-    ports:
-      - 4001
+    # ports:
+    #   - 4001
     environment:
       - POSTGRES_DB=rci_session_database
       - POSTGRES_HOST=session_db
@@ -66,8 +73,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
       - POSTGRES_DB=rci_session_database
-    ports:
-      - 6778:5432
+    # ports:
+    #   - 6778:5432
   session_expiry_wrkr:
     restart: unless-stopped
     build:
@@ -97,8 +104,8 @@ services:
     build:
       context: .
       dockerfile: ./services/uplink/api/dockerfile
-    ports:
-      - 4002
+    # ports:
+    #   - 4002
     depends_on:
       uplink_db:
         condition: service_started
@@ -171,14 +178,14 @@ services:
       interval: 10s
       timeout: 10s
       retries: 5
-    ports:
-      - 5672
+    # ports:
+    #   - 5672
   app_redis:
     restart: unless-stopped
     container_name: rci_app_redis
     image: redis:8.0.4-alpine3.21
-    ports:
-      - 6379
+    # ports:
+    #   - 6379
     healthcheck:
       test: ["CMD-SHELL", "redis-cli ping | grep PONG"]
       interval: 1s
@@ -189,8 +196,8 @@ services:
     build:
       context: .
       dockerfile: ./services/gateway/dockerfile
-    ports:
-      - 4000
+    # ports:
+    #   - 4000
     environment:
       - RCI_GATEWAY_API_ADDR=http://gateway_api:4000
       - RCI_SESSION_API_ADDR=http://session_api:4001
@@ -243,59 +250,59 @@ services:
         condition: service_started
       frontend_app:
         condition: service_started
-  us_uplink_api:
-    restart: unless-stopped
-    container_name: us_rci_uplink_api
-    build:
-      context: .
-      dockerfile: ./services/uplink/api/dockerfile
-    ports:
-      - 6777:4002
-    depends_on:
-      uplink_db:
-        condition: service_started
-      app_rabbitmq:
-        condition: service_healthy
-        restart: true
-    environment:
-      - POSTGRES_DB=rci_uplink_database
-      - POSTGRES_HOST=uplink_db
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_PORT=5432
-      - RCI_GATEWAY_API_ADDR=http://gateway_api:4000
-      - RCI_SESSION_API_ADDR=http://session_api:4001
-      - RCI_UPLINK_API_ADDR=http://uplink_api:4002
-      - APP_RABBITMQ_ADDR=amqp://rci:cyrus@app_rabbitmq:5672
-      - APP_EXT_NGINX_ADDR=http://app_ext_nginx:443
-      - APP_REDIS_ADDR=redis://app_redis:6379
-  us_session_api:
-    restart: unless-stopped
-    container_name: us_rci_session_api
-    build:
-      context: .
-      dockerfile: ./services/session/api/dockerfile
-    ports:
-      - 6776:4001
-    environment:
-      - POSTGRES_DB=rci_session_database
-      - POSTGRES_HOST=session_db
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_PORT=5432
-      - RCI_GATEWAY_API_ADDR=http://gateway_api:4000
-      - RCI_SESSION_API_ADDR=http://session_api:4001
-      - RCI_UPLINK_API_ADDR=http://uplink_api:4002
-      - APP_RABBITMQ_ADDR=amqp://rci:cyrus@app_rabbitmq:5672
-      - APP_EXT_NGINX_ADDR=http://app_ext_nginx:443
-      - APP_REDIS_ADDR=redis://app_redis:6379
-    depends_on:
-      session_db:
-        condition: service_started
-      app_rabbitmq:
-        condition: service_healthy
-        restart: true
-      app_redis:
-        condition: service_healthy
-        restart: true
+  # us_uplink_api:
+  #   restart: unless-stopped
+  #   container_name: us_rci_uplink_api
+  #   build:
+  #     context: .
+  #     dockerfile: ./services/uplink/api/dockerfile
+  #   ports:
+  #     - 6777:4002
+  #   depends_on:
+  #     uplink_db:
+  #       condition: service_started
+  #     app_rabbitmq:
+  #       condition: service_healthy
+  #       restart: true
+  #   environment:
+  #     - POSTGRES_DB=rci_uplink_database
+  #     - POSTGRES_HOST=uplink_db
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_PORT=5432
+  #     - RCI_GATEWAY_API_ADDR=http://gateway_api:4000
+  #     - RCI_SESSION_API_ADDR=http://session_api:4001
+  #     - RCI_UPLINK_API_ADDR=http://uplink_api:4002
+  #     - APP_RABBITMQ_ADDR=amqp://rci:cyrus@app_rabbitmq:5672
+  #     - APP_EXT_NGINX_ADDR=http://app_ext_nginx:443
+  #     - APP_REDIS_ADDR=redis://app_redis:6379
+  # us_session_api:
+  #   restart: unless-stopped
+  #   container_name: us_rci_session_api
+  #   build:
+  #     context: .
+  #     dockerfile: ./services/session/api/dockerfile
+  #   ports:
+  #     - 6776:4001
+  #   environment:
+  #     - POSTGRES_DB=rci_session_database
+  #     - POSTGRES_HOST=session_db
+  #     - POSTGRES_PASSWORD=postgres
+  #     - POSTGRES_PORT=5432
+  #     - RCI_GATEWAY_API_ADDR=http://gateway_api:4000
+  #     - RCI_SESSION_API_ADDR=http://session_api:4001
+  #     - RCI_UPLINK_API_ADDR=http://uplink_api:4002
+  #     - APP_RABBITMQ_ADDR=amqp://rci:cyrus@app_rabbitmq:5672
+  #     - APP_EXT_NGINX_ADDR=http://app_ext_nginx:443
+  #     - APP_REDIS_ADDR=redis://app_redis:6379
+  #   depends_on:
+  #     session_db:
+  #       condition: service_started
+  #     app_rabbitmq:
+  #       condition: service_healthy
+  #       restart: true
+  #     app_redis:
+  #       condition: service_healthy
+  #       restart: true
 secrets:
   tls_bundle:
     file: ${CERTS_FOLDER}/_.sample.com/_.sample.com.bundle.pem
